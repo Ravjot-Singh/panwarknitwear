@@ -1,0 +1,76 @@
+.pk-contact {
+  padding-top: clamp(44px, 6vw, 84px);
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.pk-contact__h1 {
+  max-width: 24ch;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.pk-contact__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(32px, 4.5vw, 72px);
+  align-items: start;
+}
+
+.pk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.pk-contact__aside {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.pk-block {
+  border-top: 1px solid rgba(33, 30, 26, 0.16);
+  padding-top: 18px;
+}
+
+.pk-block__head {
+  font: 400 10.5px/1 var(--pk-serif);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pk-muted-3);
+  margin-bottom: 12px;
+}
+
+.pk-block__body {
+  font: 400 15.5px/1.65 var(--pk-serif);
+  color: var(--pk-text-2);
+  margin: 0;
+}
+
+.pk-block__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font: 400 15px/1.4 var(--pk-serif);
+}
+
+/* Shared confirmation panel (contact + feedback). */
+.pk-note {
+  background: var(--pk-sand);
+}
+
+.pk-note__body {
+  position: relative;
+  z-index: 3;
+  padding: clamp(26px, 3vw, 40px);
+}
+
+.pk-note__head {
+  font: 400 24px/1.2 var(--pk-serif);
+  margin: 0 0 14px;
+}
+
+.pk-note__copy {
+  font: 400 15.5px/1.65 var(--pk-serif);
+  color: #6b6055;
+  margin: 0;
+}

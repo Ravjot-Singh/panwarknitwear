@@ -1,0 +1,40 @@
+# Files not uploaded to Vercel.
+#
+# Vercel runs `npm install` and `npm run build` on its own machines, so only the
+# sources the build actually reads need to travel. Everything below is either
+# rebuilt there, irrelevant to the build, or must never leave this machine.
+#
+# Note: public/img/ is deliberately NOT listed. Those garment photographs are
+# the site's product imagery and must ship with the build.
+
+# Rebuilt on Vercel
+node_modules/
+dist/
+.vite/
+.cache/
+
+# Never upload
+.env
+.env.*
+!.env.example
+
+# Version control and local tooling
+.git/
+.gitignore
+.vscode/
+.idea/
+.claude/
+
+# Docs and scratch — not read by the build
+README.md
+CLAUDE.md
+*.log
+coverage/
+.nyc_output/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+CLAUDE.md
+.claude

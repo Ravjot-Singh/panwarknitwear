@@ -1,0 +1,434 @@
+/* ============================================================
+   Motion.
+   Two families:
+   1. .pk-reveal      — quiet scroll-in used everywhere.
+   2. .pk-comic*      — Spider-Verse panel treatment reserved for
+                        NON-product cards and imagery (hero plate,
+                        craft plate, journal, timeline, buyer cards,
+                        stats, reviews, contact plate).
+   Everything is deliberately low-amplitude: short travel, small
+   offsets, no bounce loops. prefers-reduced-motion kills it all.
+   ============================================================ */
+
+/* ---------- 1. Quiet reveal ---------- */
+
+.pk-reveal {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition: opacity var(--pk-t-slow) var(--pk-ease),
+    transform var(--pk-t-slow) var(--pk-ease);
+  transition-delay: var(--pk-delay, 0ms);
+}
+.pk-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.pk-reveal--left {
+  transform: translate3d(-16px, 0, 0);
+}
+.pk-reveal--scale {
+  transform: translate3d(0, 10px, 0) scale(0.985);
+}
+
+/* ---------- 1b. Word-by-word headline ---------- */
+
+.pk-words {
+  /* the clipped boxes need a little room for descenders */
+  padding-bottom: 0.06em;
+}
+
+.pk-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* clip box grown downward so descenders survive the mask */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.pk-word__in {
+  display: inline-block;
+  transform: translate3d(0, 108%, 0) rotate(2.4deg);
+  opacity: 0;
+  transition: transform 760ms var(--pk-ease-snap), opacity 420ms var(--pk-ease);
+  transition-delay: var(--pk-delay, 0ms);
+}
+
+.pk-words.is-in .pk-word__in,
+.is-in .pk-word__in {
+  transform: none;
+  opacity: 1;
+}
+
+/* ---------- 2. Comic panel ---------- */
+
+/* The panel itself: a hard-inked frame that snaps in slightly
+   over-eager, the way a Spider-Verse cut lands one frame early. */
+/* Three colour plates, printed out of register.
+   All hard-edged — zero blur — so each one lands as its own crisp silhouette
+   the way a misaligned press lays them down: magenta pushed right, cyan pushed
+   left, the ink plate almost true. The offsets are deliberately unequal (7 vs
+   6) so it reads as a genuine registration error rather than a symmetrical
+   effect. Earlier listed shadows paint on top, so ink sits over magenta over
+   cyan. */
+.pk-comic {
+  position: relative;
+  isolation: isolate;
+  border: 1.5px solid var(--pk-comic-ink);
+  border-radius: 1px;
+  background: var(--pk-bg);
+  box-shadow: 3px 3px 0 rgba(33, 30, 26, 0.16),
+    7px 6px 0 rgba(var(--pk-cmy-m), var(--pk-tint-shadow-m)),
+    -6px 6px 0 rgba(var(--pk-cmy-c), var(--pk-tint-shadow-c));
+  transition: transform var(--pk-t) var(--pk-ease-snap),
+    box-shadow var(--pk-t) var(--pk-ease-snap);
+}
+
+.pk-comic--flat {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* On hover the plates pull further apart — the press slipping mid-run. */
+.pk-comic:hover {
+  transform: translate3d(-2px, -2px, 0);
+  box-shadow: 4px 4px 0 rgba(33, 30, 26, 0.18),
+    14px 12px 0 rgba(var(--pk-cmy-m), 0.56),
+    -12px 12px 0 rgba(var(--pk-cmy-c), 0.52);
+}
+
+/* The wash inside the panel: the same two channels bled across the face at an
+   alpha that should register as atmosphere, not as colour. Sits above the
+   artwork but below the caption and tick, and never intercepts pointers. */
+.pk-comic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    rgba(var(--pk-cmy-c), var(--pk-tint-card-strong)) 0%,
+    rgba(var(--pk-cmy-c), 0) 38%,
+    rgba(var(--pk-cmy-m), 0) 62%,
+    rgba(var(--pk-cmy-m), var(--pk-tint-card-strong)) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--pk-t-slow) var(--pk-ease);
+}
+.pk-comic.is-in::after {
+  opacity: 1;
+}
+/* Flat panels sit directly on the page behind body copy, so they take the
+   lighter of the two washes. */
+.pk-comic--flat::after {
+  background: linear-gradient(
+    118deg,
+    rgba(var(--pk-cmy-c), var(--pk-tint-card)) 0%,
+    rgba(var(--pk-cmy-c), 0) 42%,
+    rgba(var(--pk-cmy-m), 0) 58%,
+    rgba(var(--pk-cmy-m), var(--pk-tint-card)) 100%
+  );
+}
+
+/* Ben-Day halftone wash — the printed-newsprint tooth.
+   Two offset dot grids so it reads as CMYK screen, not noise. */
+.pk-comic__dots {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(
+      var(--pk-comic-halftone) 1px,
+      transparent 1.2px
+    ),
+    radial-gradient(rgba(18, 179, 198, 0.1) 1px, transparent 1.2px);
+  background-size: 6px 6px, 6px 6px;
+  background-position: 0 0, 3px 3px;
+  transition: opacity var(--pk-t-slow) var(--pk-ease);
+}
+.pk-comic.is-in .pk-comic__dots {
+  opacity: 0.55;
+}
+.pk-comic:hover .pk-comic__dots {
+  opacity: 0.8;
+}
+
+/* Chromatic aberration — the cyan/magenta misregistration.
+   Held to 2–3px so it reads as bad printing, not as a glitch effect. */
+.pk-comic__ink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--pk-t) var(--pk-ease),
+    transform var(--pk-t) var(--pk-ease);
+}
+.pk-comic__ink::before,
+.pk-comic__ink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  transition: transform var(--pk-t) var(--pk-ease-snap);
+}
+.pk-comic__ink::before {
+  background: var(--pk-comic-cyan);
+  opacity: 0.22;
+}
+.pk-comic__ink::after {
+  background: var(--pk-comic-magenta);
+  opacity: 0.18;
+}
+.pk-comic:hover .pk-comic__ink {
+  opacity: 1;
+}
+.pk-comic:hover .pk-comic__ink::before {
+  transform: translate3d(-2.5px, 1.5px, 0);
+}
+.pk-comic:hover .pk-comic__ink::after {
+  transform: translate3d(2.5px, -1.5px, 0);
+}
+
+/* The entrance: a single settle-in shift, no repeat. */
+.pk-comic.pk-reveal {
+  transform: translate3d(0, 16px, 0) rotate(-0.35deg);
+}
+.pk-comic.pk-reveal.is-in {
+  animation: pk-panel-settle 520ms var(--pk-ease-snap) both;
+  animation-delay: var(--pk-delay, 0ms);
+}
+
+@keyframes pk-panel-settle {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0) rotate(-0.35deg) scale(0.985);
+  }
+  55% {
+    opacity: 1;
+    transform: translate3d(0, -2px, 0) rotate(0.14deg) scale(1.004);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Split-flash: the one-off CMYK separation as the panel lands.
+   Fires once, 420ms, then the layer is inert. */
+.pk-comic.is-in .pk-comic__ink {
+  animation: pk-ink-flash 420ms var(--pk-ease) both;
+  animation-delay: var(--pk-delay, 0ms);
+}
+@keyframes pk-ink-flash {
+  0% {
+    opacity: 0.9;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Kirby-krackle speckle for the dark buyer-services band. */
+.pk-comic--krackle .pk-comic__dots {
+  background-image: radial-gradient(
+      rgba(201, 138, 99, 0.4) 1px,
+      transparent 1.3px
+    ),
+    radial-gradient(rgba(18, 179, 198, 0.16) 1.5px, transparent 1.8px);
+  background-size: 7px 7px, 13px 13px;
+  mix-blend-mode: screen;
+}
+
+/* Hand-lettered caption plate ("Plate 01 — …" style tags). */
+.pk-comic__caption {
+  position: absolute;
+  z-index: 3;
+  bottom: -1px;
+  left: -1px;
+  background: var(--pk-bg);
+  border: 1.5px solid var(--pk-comic-ink);
+  border-left: 0;
+  border-bottom: 0;
+  padding: 9px 16px 7px 14px;
+  font: 400 10.5px/1.4 var(--pk-serif);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--pk-t) var(--pk-ease-snap);
+}
+.pk-comic:hover .pk-comic__caption {
+  transform: translate3d(0, -2px, 0);
+}
+
+/* Numbered panel tick, top-right, like a page corner. */
+.pk-comic__tick {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 12px;
+  font: 600 9.5px/1 var(--pk-serif);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pk-rust);
+  opacity: 0;
+  transform: translate3d(0, -4px, 0);
+  transition: opacity var(--pk-t) var(--pk-ease),
+    transform var(--pk-t) var(--pk-ease);
+}
+.pk-comic.is-in .pk-comic__tick {
+  opacity: 0.85;
+  transform: none;
+  transition-delay: calc(var(--pk-delay, 0ms) + 240ms);
+}
+
+/* ---------- Small, shared motions ---------- */
+
+.pk-lift {
+  transition: transform var(--pk-t) var(--pk-ease),
+    opacity var(--pk-t) var(--pk-ease);
+}
+.pk-lift:hover {
+  transform: translate3d(0, -3px, 0);
+}
+
+.pk-underline {
+  position: relative;
+}
+.pk-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--pk-t) var(--pk-ease);
+}
+.pk-underline:hover::after,
+.pk-underline.is-current::after {
+  transform: scaleX(1);
+}
+
+/* Route change: content fades up once per navigation. */
+.pk-page {
+  animation: pk-page-in 380ms var(--pk-ease) both;
+}
+@keyframes pk-page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Cart badge pulses once when the count changes. */
+.pk-bump {
+  animation: pk-bump 340ms var(--pk-ease-snap);
+}
+@keyframes pk-bump {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Product plate: the knit swatch drifts a hair on hover. Product
+   cards stay out of the comic treatment on purpose. */
+.pk-plate {
+  transition: transform var(--pk-t-slow) var(--pk-ease);
+}
+.pk-plate:hover .pk-plate__weave {
+  transform: scale(1.04);
+}
+.pk-plate__weave {
+  transition: transform var(--pk-t-slow) var(--pk-ease);
+}
+
+/* ---------- 3. Themed numerals and markers ---------- */
+
+/* A permanent hairline of the same misregistration, carried by the type that
+   speaks in the brand's voice — prices above all, plus stat figures, timeline
+   years, craft step numbers, panel ticks, review stars and the order number.
+   These are picked deliberately rather than applied to every numeral: a uniform
+   treatment stops reading as design and starts reading as a rendering fault.
+   Sub-pixel offsets at low alpha, so the glyph edges stay crisp. */
+.pk-pcard__price,
+.pk-product__price,
+.pk-line__total,
+.pk-summary__total .pk-num,
+.pk-stat__value,
+.pk-astat__value,
+.pk-mile__year,
+.pk-review__stars,
+.pk-comic__tick,
+.pk-done__body strong {
+  text-shadow: var(--pk-split-text-xs);
+}
+
+/* On the dark bands the channels need a little more to register at all. */
+.pk-stage__n {
+  text-shadow: var(--pk-split-text-xs-dark);
+}
+
+/* Prices step up to the link-strength split when their card is hovered, so the
+   plate separation on the panel and the one on the type move together. */
+.pk-pcard__price {
+  transition: text-shadow var(--pk-t) var(--pk-ease-snap);
+}
+.pk-pcard:hover .pk-pcard__price {
+  text-shadow: var(--pk-split-text);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .pk-reveal,
+  .pk-comic.pk-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .pk-word__in {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .pk-word {
+    overflow: visible;
+  }
+  .pk-comic__ink {
+    display: none;
+  }
+  .pk-comic.is-in .pk-comic__dots {
+    opacity: 0.4;
+  }
+}

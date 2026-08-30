@@ -1,0 +1,73 @@
+.pk-cimg {
+  overflow: hidden;
+  min-height: 220px;
+}
+
+.pk-cimg__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* A shade more contrast and a touch less saturation reads as printed
+     ink rather than a photograph sitting on the page. */
+  filter: contrast(1.06) saturate(0.94);
+  /* Base overscale leaves room for the pointer parallax to move into. */
+  transform: scale(1.06) translate3d(var(--pk-par-x, 0), var(--pk-par-y, 0), 0);
+  transition: transform var(--pk-t-slow) var(--pk-ease),
+    filter var(--pk-t) var(--pk-ease);
+}
+
+.pk-comic:hover .pk-cimg__img {
+  transform: scale(1.09) translate3d(var(--pk-par-x, 0), var(--pk-par-y, 0), 0);
+  filter: contrast(1.12) saturate(1);
+}
+
+/* Pointer moves are followed closely; the settle back to centre is slower. */
+.pk-comic:hover .pk-cimg__img {
+  transition: transform 220ms var(--pk-ease), filter var(--pk-t) var(--pk-ease);
+}
+
+/* The garment shots are flat-laid on a dark studio floor, so the page-corner
+   tick gets its own small plate rather than sitting bare on the photograph. */
+.pk-cimg .pk-comic__tick {
+  background: var(--pk-bg);
+  border: 1.5px solid var(--pk-comic-ink);
+  border-top: 0;
+  border-right: 0;
+  top: -1px;
+  right: -1px;
+  padding: 7px 12px 6px 13px;
+}
+
+.pk-cimg__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 18px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pk-swatch-a) 0 4px,
+    var(--pk-swatch-b) 4px 8px
+  );
+}
+
+.pk-cimg__fallback::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 50% 0,
+    rgba(255, 255, 255, 0.5),
+    rgba(33, 30, 26, 0.07)
+  );
+}
+
+.pk-cimg__fallback-label {
+  position: relative;
+  z-index: 1;
+  font: 400 10.5px/1.45 var(--pk-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+  max-width: 26ch;
+}

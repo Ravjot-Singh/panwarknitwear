@@ -1,0 +1,86 @@
+.pk-footer {
+  background: var(--pk-ink);
+  color: var(--pk-cream);
+  margin-top: 0;
+}
+
+.pk-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(28px, 3.5vw, 56px);
+  padding-top: clamp(40px, 5vw, 72px);
+  padding-bottom: clamp(28px, 3vw, 44px);
+}
+
+.pk-footer__brand {
+  font: 600 19px/1 var(--pk-serif);
+  letter-spacing: 0.02em;
+  margin-bottom: 12px;
+}
+
+.pk-footer__blurb {
+  font: 400 14px/1.65 var(--pk-serif);
+  color: rgba(242, 236, 226, 0.6);
+  margin: 0;
+  max-width: 34ch;
+}
+
+.pk-footer__head {
+  font: 400 10.5px/1 var(--pk-serif);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pk-tan);
+  margin-bottom: 16px;
+}
+
+.pk-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: flex-start;
+}
+
+.pk-footer__list a,
+.pk-footer__contact a {
+  display: inline-block;
+  font: 400 14px/1.4 var(--pk-serif);
+  color: var(--pk-on-dark);
+  transition: color var(--pk-t-fast) var(--pk-ease),
+    transform var(--pk-t-fast) var(--pk-ease),
+    text-shadow var(--pk-t) var(--pk-ease-snap);
+}
+/* Slightly stronger than the nav: these sit on the dark band, where the two
+   channels read as a faint glow rather than as ink. */
+.pk-footer__list a:hover,
+.pk-footer__contact a:hover {
+  color: var(--pk-cream);
+  text-shadow: var(--pk-split-text-dark);
+}
+.pk-footer__list a:hover {
+  transform: translateX(3px);
+}
+
+.pk-footer__contact {
+  font: 400 14px/1.75 var(--pk-serif);
+  color: var(--pk-on-dark);
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk-footer__list a:hover,
+  .pk-footer__contact a:hover {
+    text-shadow: none;
+  }
+}
+
+.pk-footer__base {
+  border-top: 1px solid var(--pk-line-dark);
+  padding-top: 20px;
+  padding-bottom: clamp(32px, 4vw, 52px);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font: 400 12px/1.5 var(--pk-serif);
+  color: var(--pk-on-dark-faint);
+}

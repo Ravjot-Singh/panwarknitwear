@@ -1,0 +1,22 @@
+.pk-collection {
+  padding-top: clamp(40px, 5vw, 72px);
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.pk-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--pk-line);
+  border-bottom: 1px solid var(--pk-line);
+  padding: 18px 0;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+
+.pk-toolbar__group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

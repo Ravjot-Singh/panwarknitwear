@@ -1,0 +1,341 @@
+.pk-header {
+  --pk-header-h: 74px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 243, 236, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(33, 30, 26, 0.1);
+  transition: background var(--pk-t) var(--pk-ease),
+    box-shadow var(--pk-t) var(--pk-ease),
+    border-color var(--pk-t) var(--pk-ease);
+}
+
+/* Condensed once the page leaves the top. */
+.pk-header.is-stuck {
+  --pk-header-h: 60px;
+  background: rgba(247, 243, 236, 0.97);
+  border-bottom-color: rgba(33, 30, 26, 0.14);
+  /* A full-width bar can't show a horizontal plate offset — it would fall off
+     the viewport — so the misregistration reads vertically instead: two thin
+     colour rules slipped below the ink one. */
+  box-shadow: 0 1px 0 rgba(33, 30, 26, 0.08),
+    0 3px 0 rgba(var(--pk-cmy-m), 0.2),
+    0 5px 0 rgba(var(--pk-cmy-c), 0.16),
+    0 14px 22px -20px rgba(33, 30, 26, 0.45);
+}
+
+.pk-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: var(--pk-header-h);
+  transition: min-height var(--pk-t) var(--pk-ease);
+}
+
+/* ---------- Reading progress ---------- */
+
+.pk-header__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pk-rust), var(--pk-tan));
+  transform-origin: left;
+  transform: scaleX(0);
+  opacity: 0;
+  transition: opacity var(--pk-t) var(--pk-ease);
+  pointer-events: none;
+}
+.pk-header.is-stuck .pk-header__progress {
+  opacity: 1;
+}
+
+/* ---------- Wordmark ---------- */
+
+.pk-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 0;
+  color: var(--pk-ink);
+}
+.pk-brand:hover {
+  color: var(--pk-ink);
+}
+
+.pk-brand__name {
+  position: relative;
+  font: 600 clamp(17px, 1.6vw, 20px) / 1 var(--pk-serif);
+  letter-spacing: 0.02em;
+  transition: letter-spacing var(--pk-t) var(--pk-ease);
+}
+
+/* Two ghosted copies of the wordmark, pulled apart on hover — the same
+   misregistration the comic panels use, at wordmark scale. */
+.pk-brand__name::before,
+.pk-brand__name::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--pk-t) var(--pk-ease),
+    transform var(--pk-t) var(--pk-ease-snap);
+}
+.pk-brand__name::before {
+  color: rgb(var(--pk-cmy-c));
+}
+.pk-brand__name::after {
+  color: rgb(var(--pk-cmy-m));
+}
+.pk-brand:hover .pk-brand__name {
+  letter-spacing: 0.042em;
+}
+/* The wordmark is the largest type on the page, so it gets the full plate
+   separation rather than the fringe the links use — the ghosts snap apart on
+   the springy easing. The ink-dark wordmark still sits fully legible on top. */
+.pk-brand:hover .pk-brand__name::before {
+  opacity: 0.52;
+  transform: translate3d(-1.5px, 0.9px, 0);
+}
+.pk-brand:hover .pk-brand__name::after {
+  opacity: 0.46;
+  transform: translate3d(1.5px, -0.9px, 0);
+}
+
+.pk-brand__sub {
+  font: 400 9.5px/1 var(--pk-serif);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+  max-height: 12px;
+  overflow: hidden;
+  transition: max-height var(--pk-t) var(--pk-ease),
+    opacity var(--pk-t) var(--pk-ease),
+    transform var(--pk-t) var(--pk-ease);
+}
+.pk-header.is-stuck .pk-brand__sub {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ---------- Nav ---------- */
+
+.pk-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 30px);
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.pk-nav__link {
+  position: relative;
+  font: 400 14.5px/1 var(--pk-serif);
+  letter-spacing: 0.03em;
+  color: var(--pk-ink);
+  padding: 6px 0;
+  transition: color var(--pk-t-fast) var(--pk-ease),
+    transform var(--pk-t-fast) var(--pk-ease),
+    text-shadow var(--pk-t) var(--pk-ease-snap);
+}
+.pk-nav__link:hover,
+.pk-nav__link.is-current {
+  color: var(--pk-rust);
+}
+.pk-nav__link:hover {
+  transform: translateY(-1px);
+  text-shadow: var(--pk-split-text);
+}
+
+/* A small rust dot that drops in under the current page. */
+.pk-nav__link::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--pk-rust);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--pk-t) var(--pk-ease),
+    transform var(--pk-t) var(--pk-ease-snap);
+}
+.pk-nav__link.is-current::before {
+  opacity: 1;
+  transform: none;
+}
+
+.pk-nav__cart {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 13px/1 var(--pk-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pk-ink);
+  border: 1px solid var(--pk-line-strong);
+  padding: 9px 15px;
+  border-radius: var(--pk-radius);
+  /* Ink wipe: a rust fill drawn in from the left on hover. */
+  background-color: transparent;
+  background-image: linear-gradient(var(--pk-rust), var(--pk-rust));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left center;
+  transition: background-size var(--pk-t) var(--pk-ease),
+    border-color var(--pk-t-fast) var(--pk-ease),
+    color var(--pk-t-fast) var(--pk-ease);
+}
+.pk-nav__cart:hover {
+  border-color: var(--pk-rust);
+  color: var(--pk-bg);
+  background-size: 100% 100%;
+}
+.pk-nav__count {
+  color: var(--pk-rust);
+  display: inline-block;
+  transition: color var(--pk-t-fast) var(--pk-ease);
+}
+.pk-nav__cart:hover .pk-nav__count {
+  color: var(--pk-bg);
+}
+
+/* ---------- Burger ---------- */
+
+.pk-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  padding: 0 9px;
+  background: none;
+  border: 1px solid var(--pk-line-strong);
+  border-radius: var(--pk-radius);
+  cursor: pointer;
+  transition: border-color var(--pk-t-fast) var(--pk-ease);
+}
+.pk-burger:hover {
+  border-color: var(--pk-rust);
+}
+.pk-burger span {
+  display: block;
+  height: 1.5px;
+  background: var(--pk-ink);
+  transition: transform var(--pk-t) var(--pk-ease-snap),
+    opacity var(--pk-t-fast) var(--pk-ease);
+}
+.pk-burger.is-open span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.pk-burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.pk-burger.is-open span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.pk-scrim {
+  position: fixed;
+  inset: var(--pk-header-h) 0 0;
+  background: rgba(33, 30, 26, 0.32);
+  z-index: 40;
+  animation: pk-page-in 220ms var(--pk-ease) both;
+}
+
+/* ---------- Mobile drawer ---------- */
+
+@media (max-width: 860px) {
+  .pk-burger {
+    display: flex;
+  }
+
+  .pk-nav {
+    position: fixed;
+    top: var(--pk-header-h);
+    left: 0;
+    right: 0;
+    z-index: 45;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--pk-gutter) 26px;
+    background: var(--pk-bg);
+    border-bottom: 1px solid var(--pk-line);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity var(--pk-t) var(--pk-ease),
+      transform var(--pk-t) var(--pk-ease),
+      top var(--pk-t) var(--pk-ease),
+      visibility 0s linear var(--pk-t);
+  }
+
+  .pk-nav.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  /* Links stagger in behind the drawer. */
+  .pk-nav.is-open .pk-nav__link,
+  .pk-nav.is-open .pk-nav__cart {
+    animation: pk-drawer-in 340ms var(--pk-ease) both;
+  }
+  .pk-nav.is-open .pk-nav__link:nth-child(1) { animation-delay: 40ms; }
+  .pk-nav.is-open .pk-nav__link:nth-child(2) { animation-delay: 80ms; }
+  .pk-nav.is-open .pk-nav__link:nth-child(3) { animation-delay: 120ms; }
+  .pk-nav.is-open .pk-nav__link:nth-child(4) { animation-delay: 160ms; }
+  .pk-nav.is-open .pk-nav__link:nth-child(5) { animation-delay: 200ms; }
+  .pk-nav.is-open .pk-nav__cart { animation-delay: 240ms; }
+
+  @keyframes pk-drawer-in {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .pk-nav__link {
+    font-size: 17px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--pk-line-soft);
+  }
+  .pk-nav__link::after,
+  .pk-nav__link::before {
+    display: none;
+  }
+
+  .pk-nav__cart {
+    margin-top: 20px;
+    justify-content: center;
+    padding: 14px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk-brand__name::before,
+  .pk-brand__name::after {
+    display: none;
+  }
+  .pk-nav__link:hover {
+    text-shadow: none;
+  }
+}

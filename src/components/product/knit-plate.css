@@ -1,0 +1,106 @@
+.pk-knit {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(33, 30, 26, 0.1);
+  background: var(--pk-swatch-a);
+  /* The same out-of-register plates as the comic panels, but tighter and
+     lighter — product cards stay quiet while still casting one page-wide
+     light. Hard-edged, like the panels. */
+  box-shadow: 4px 4px 0 rgba(var(--pk-cmy-m), 0.3),
+    -3px 4px 0 rgba(var(--pk-cmy-c), 0.26);
+  transition: border-color var(--pk-t) var(--pk-ease),
+    box-shadow var(--pk-t) var(--pk-ease);
+}
+
+.pk-pcard:hover .pk-knit,
+.pk-knit:hover {
+  box-shadow: 8px 7px 0 rgba(var(--pk-cmy-m), 0.4),
+    -7px 7px 0 rgba(var(--pk-cmy-c), 0.36);
+}
+
+/* Barely-there wash across the garment, matching the comic panels. */
+.pk-knit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    rgba(var(--pk-cmy-c), var(--pk-tint-card)) 0%,
+    rgba(var(--pk-cmy-c), 0) 40%,
+    rgba(var(--pk-cmy-m), 0) 60%,
+    rgba(var(--pk-cmy-m), var(--pk-tint-card)) 100%
+  );
+}
+
+.pk-knit__weave {
+  position: absolute;
+  inset: -2%;
+  transition: transform var(--pk-t-slow) var(--pk-ease);
+}
+
+.pk-knit__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--pk-t-slow) var(--pk-ease);
+}
+
+/* ---------- Swatch plate ---------- */
+
+.pk-knit__sheen {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 50% 0,
+    rgba(255, 255, 255, 0.5),
+    rgba(33, 30, 26, 0.07)
+  );
+}
+
+.pk-knit__brand {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  font: 600 9.5px/1 var(--pk-serif);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pk-text-3);
+}
+
+.pk-knit__plate {
+  position: absolute;
+  z-index: 2;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  font: 400 10.5px/1.4 var(--pk-serif);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+}
+
+/* ---------- Photo plate ----------
+   The garment shots are flat-laid on a dark studio floor, so the swatch
+   sheen is swapped for a top-and-bottom scrim and the captions go light. */
+
+.pk-knit--photo .pk-knit__sheen {
+  background: linear-gradient(
+      to bottom,
+      rgba(20, 18, 16, 0.5) 0%,
+      rgba(20, 18, 16, 0) 22%
+    ),
+    linear-gradient(to top, rgba(20, 18, 16, 0.58) 0%, rgba(20, 18, 16, 0) 26%);
+}
+
+.pk-knit--photo .pk-knit__brand {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.pk-knit--photo .pk-knit__plate {
+  color: rgba(255, 255, 255, 0.78);
+}

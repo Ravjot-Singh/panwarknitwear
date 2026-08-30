@@ -1,0 +1,102 @@
+/* Design tokens — lifted verbatim from the Panwar Knitwear design canvas. */
+
+:root {
+  /* Surfaces */
+  --pk-bg: #f7f3ec;
+  --pk-sand: #ece3d6;
+  --pk-field: #fdfbf7;
+  --pk-ink: #211e1a;
+  --pk-cream: #f2ece2;
+
+  /* Accents */
+  --pk-rust: #9d5734;
+  --pk-rust-dark: #7a3f22;
+  --pk-tan: #c98a63;
+  --pk-moss: #4c574a;
+  --pk-danger: #8c2f2f;
+  --pk-danger-bg: #f3e3df;
+
+  /* Text */
+  --pk-text: #211e1a;
+  --pk-text-2: #4a433b;
+  --pk-text-3: #5f564c;
+  --pk-muted: #6d6459;
+  --pk-muted-2: #8b8177;
+  --pk-muted-3: #a89c8e;
+  --pk-muted-4: #b6aa9c;
+  --pk-on-dark: rgba(242, 236, 226, 0.78);
+  --pk-on-dark-soft: rgba(242, 236, 226, 0.66);
+  --pk-on-dark-faint: rgba(242, 236, 226, 0.45);
+
+  /* Lines */
+  --pk-line: rgba(33, 30, 26, 0.13);
+  --pk-line-soft: rgba(33, 30, 26, 0.09);
+  --pk-line-strong: rgba(33, 30, 26, 0.22);
+  --pk-line-dark: rgba(242, 236, 226, 0.16);
+
+  /* Knit swatch (product plates) */
+  --pk-swatch-a: #e7dccb;
+  --pk-swatch-b: #ddd0bb;
+
+  /* Type */
+  --pk-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+
+  /* Rhythm */
+  --pk-shell: 1280px;
+  --pk-gutter: clamp(18px, 4vw, 56px);
+  --pk-radius: 2px;
+
+  /* Motion — kept short and low-amplitude on purpose */
+  --pk-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --pk-ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1.02);
+  --pk-t-fast: 160ms;
+  --pk-t: 260ms;
+  --pk-t-slow: 620ms;
+
+  /* Comic-book (Spider-Verse) treatment */
+  --pk-comic-cyan: #12b3c6;
+  --pk-comic-magenta: #d8347f;
+  --pk-comic-halftone: rgba(157, 87, 52, 0.16);
+  --pk-comic-ink: rgba(33, 30, 26, 0.85);
+
+  /* Mis-registration channels, as raw triplets so alpha can be varied per use.
+     The same two colours drive the wordmark hover, the coloured cast under
+     every card, and the faint wash inside one. */
+  --pk-cmy-c: 18, 179, 198;
+  --pk-cmy-m: 216, 52, 127;
+
+  /* Chromatic split for type on hover. Held in one place so the wordmark, the
+     nav and the footer stay in step. Small type gets the lighter of the two:
+     a sub-pixel fringe, enough to catch the eye without fuzzing the letterform.
+     Uses text-shadow rather than duplicated pseudo-elements so it applies to
+     any link without needing a data-text copy of its label. */
+  --pk-split-text: -0.9px 0.5px 0 rgba(18, 179, 198, 0.5),
+    0.9px -0.5px 0 rgba(216, 52, 127, 0.45);
+  --pk-split-text-dark: -0.9px 0.5px 0 rgba(18, 179, 198, 0.62),
+    0.9px -0.5px 0 rgba(216, 52, 127, 0.55);
+
+  /* The resting variant, for type that carries the split permanently rather
+     than on hover — prices, stat figures, panel ticks. Sub-pixel so it themes
+     the numerals without softening them. */
+  --pk-split-text-xs: -0.55px 0.3px 0 rgba(18, 179, 198, 0.4),
+    0.55px -0.3px 0 rgba(216, 52, 127, 0.36);
+  --pk-split-text-xs-dark: -0.55px 0.3px 0 rgba(18, 179, 198, 0.52),
+    0.55px -0.3px 0 rgba(216, 52, 127, 0.46);
+
+  /* Inside a card: meant to sit just at the edge of perception.
+     These are capped by contrast, not by taste. Measured at the gradient's
+     strongest corner against muted body copy (#6b6055):
+       - on cream (#f7f3ec) 0.07 leaves 5.05:1, comfortably over AA's 4.5
+       - on sand  (#ece3d6) the headroom is much smaller, so panels sitting on
+         sand take the lighter wash: 0.03 leaves 4.64:1, where 0.045 would
+         leave only 4.55:1.
+     Raise either of these and re-check both surfaces before shipping. */
+  --pk-tint-card: 0.03;
+  --pk-tint-card-strong: 0.07;
+
+  /* Under a card: allowed to read clearly as colour. These are HARD shadows —
+     zero blur — so each channel lands as a crisp offset plate rather than a
+     glow. That crispness is the whole effect; adding blur kills it. */
+  --pk-tint-shadow-c: 0.44;
+  --pk-tint-shadow-m: 0.48;
+}
