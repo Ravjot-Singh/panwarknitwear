@@ -9,6 +9,8 @@ import {
   DELIVERY_OPTIONS,
   RATING_LABELS,
 } from '../../data/reviews'
+import Seo from '../../components/seo/Seo'
+import { ROUTE_SEO, breadcrumbJsonLd } from '../../data/seo'
 import './feedback.css'
 
 export default function Feedback() {
@@ -39,6 +41,13 @@ export default function Feedback() {
 
   return (
     <div className="pk-shell pk-feedback">
+      <Seo
+        {...ROUTE_SEO['/feedback']}
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Feedback', path: '/feedback' },
+        ])}
+      />
       <Reveal as="div" className="pk-eyebrow">
         Feedback
       </Reveal>
@@ -56,9 +65,16 @@ export default function Feedback() {
             <ComicPanel className="pk-note">
               <div className="pk-note__body">
                 <h2 className="pk-note__head">Logged — thank you.</h2>
+                {/* The old copy promised the review would be published once
+                    matched to an order, which nothing here can do: this form
+                    has no backend and the note below now says so. */}
                 <p className="pk-note__copy" style={{ marginBottom: 22 }}>
-                  Your review goes up once we've matched it to the order. If you flagged a
-                  fit issue, the pattern master will write to you directly.
+                  Fit notes reach the pattern master and packaging notes reach dispatch,
+                  so both change the next run.
+                </p>
+                <p className="pk-note__copy pk-demo-note" style={{ marginBottom: 22 }}>
+                  This is a demonstration build — nothing was sent or stored. Reach the
+                  floor on the numbers in the footer.
                 </p>
                 <button type="button" className="pk-btn pk-btn--ghost" onClick={reset}>
                   Write another

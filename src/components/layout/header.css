@@ -124,12 +124,27 @@
   transform: translateY(-4px);
 }
 
+/* The tagline is worth about 90px of the header row, and between roughly 940
+   and 1200px that width is needed by the nav — which now also carries the
+   pricing switch and the saved count. It already disappears on scroll, so
+   dropping it in this band reuses behaviour the header already has rather than
+   introducing a new one. The wordmark itself never moves. */
+@media (max-width: 1200px) {
+  .pk-brand__sub {
+    display: none;
+  }
+}
+
 /* ---------- Nav ---------- */
 
+/* The gap max came down from 30px: with the pricing switch and the saved
+   count now in this row, the old spacing left the nav needing exactly the
+   width available, so sub-pixel rounding tipped it into wrapping onto a
+   second line. */
 .pk-nav {
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2vw, 30px);
+  gap: clamp(13px, 1.6vw, 22px);
   flex-wrap: wrap;
   padding: 8px 0;
 }
@@ -209,6 +224,61 @@
   color: var(--pk-bg);
 }
 
+/* ---------- Saved count ---------- */
+
+.pk-nav__saved {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 13px/1 var(--pk-serif);
+  letter-spacing: 0.1em;
+  color: var(--pk-rust);
+  padding: 6px 0;
+  transition: color var(--pk-t-fast) var(--pk-ease),
+    transform var(--pk-t-fast) var(--pk-ease);
+}
+.pk-nav__saved:hover {
+  color: var(--pk-rust-dark);
+  transform: translateY(-1px);
+}
+
+/* ---------- Retail / wholesale switch ---------- */
+
+.pk-modeswitch {
+  display: inline-flex;
+  border: 1px solid var(--pk-line-strong);
+  border-radius: var(--pk-radius);
+  overflow: hidden;
+}
+
+.pk-modeswitch__btn {
+  font: 400 10px/1 var(--pk-serif);
+  /* Tight tracking and padding: this control has to earn its place in a row
+     that is already full. */
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pk-muted);
+  background: transparent;
+  border: 0;
+  padding: 8px 9px;
+  cursor: pointer;
+  transition: background var(--pk-t-fast) var(--pk-ease),
+    color var(--pk-t-fast) var(--pk-ease);
+}
+
+.pk-modeswitch__btn + .pk-modeswitch__btn {
+  border-left: 1px solid var(--pk-line);
+}
+
+.pk-modeswitch__btn:hover {
+  color: var(--pk-rust);
+}
+
+.pk-modeswitch__btn.is-on {
+  background: var(--pk-ink);
+  color: var(--pk-cream);
+}
+
 /* ---------- Burger ---------- */
 
 .pk-burger {
@@ -255,7 +325,10 @@
 
 /* ---------- Mobile drawer ---------- */
 
-@media (max-width: 860px) {
+/* Raised from 860px. The row now carries five links, the pricing switch, the
+   saved count and the bag; below roughly 940px those cannot sit on one line
+   even with the tagline hidden, and the drawer has room to spare. */
+@media (max-width: 940px) {
   .pk-burger {
     display: flex;
   }
@@ -292,6 +365,8 @@
 
   /* Links stagger in behind the drawer. */
   .pk-nav.is-open .pk-nav__link,
+  .pk-nav.is-open .pk-nav__saved,
+  .pk-nav.is-open .pk-modeswitch,
   .pk-nav.is-open .pk-nav__cart {
     animation: pk-drawer-in 340ms var(--pk-ease) both;
   }
@@ -300,7 +375,8 @@
   .pk-nav.is-open .pk-nav__link:nth-child(3) { animation-delay: 120ms; }
   .pk-nav.is-open .pk-nav__link:nth-child(4) { animation-delay: 160ms; }
   .pk-nav.is-open .pk-nav__link:nth-child(5) { animation-delay: 200ms; }
-  .pk-nav.is-open .pk-nav__cart { animation-delay: 240ms; }
+  .pk-nav.is-open .pk-modeswitch { animation-delay: 240ms; }
+  .pk-nav.is-open .pk-nav__cart { animation-delay: 280ms; }
 
   @keyframes pk-drawer-in {
     from {
@@ -313,10 +389,16 @@
     }
   }
 
-  .pk-nav__link {
+  .pk-nav__link,
+  .pk-nav__saved {
     font-size: 17px;
     padding: 16px 0;
     border-bottom: 1px solid var(--pk-line-soft);
+  }
+  .pk-nav__saved {
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
   .pk-nav__link::after,
   .pk-nav__link::before {
@@ -327,6 +409,20 @@
     margin-top: 20px;
     justify-content: center;
     padding: 14px 18px;
+  }
+
+  /* Full width in the drawer, so the two halves are comfortable thumb targets
+     rather than the compact desktop chip. */
+  .pk-modeswitch {
+    margin-top: 22px;
+  }
+  .pk-modeswitch__btn {
+    flex: 1;
+    /* 44px is the smallest comfortable touch target; padding alone left these
+       at 40. */
+    min-height: 44px;
+    padding: 14px 12px;
+    font-size: 11.5px;
   }
 }
 

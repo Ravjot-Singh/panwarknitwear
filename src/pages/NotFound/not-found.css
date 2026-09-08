@@ -1,0 +1,30 @@
+.pk-404 {
+  max-width: 760px;
+  padding-top: clamp(56px, 9vw, 140px);
+  padding-bottom: clamp(56px, 9vw, 140px);
+}
+
+.pk-404__head {
+  font: 400 clamp(34px, 5vw, 60px) / 1.04 var(--pk-serif);
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+}
+
+.pk-404__body {
+  font: 400 17px/1.65 var(--pk-serif);
+  color: var(--pk-muted);
+  margin: 0 0 36px;
+  max-width: 54ch;
+}
+
+.pk-404__actions {
+  margin-bottom: 40px;
+}
+
+.pk-404__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  padding-top: 26px;
+  border-top: 1px solid var(--pk-line);
+}

@@ -36,6 +36,53 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* The main landmark takes tabIndex={-1} so the skip link can move focus into
+   it; that must not paint a focus ring when it is reached by click. */
+main:focus {
+  outline: none;
+}
+
+/* Screen-reader-only, but still rendered — clip rather than display:none, or
+   assistive tech ignores it. Used by the route announcer. */
+.pk-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Off-screen until focused, then it lands over the header.
+
+   position: fixed, not absolute — absolute anchors it to the page, so the link
+   sits off-screen the moment the visitor has scrolled at all, which is exactly
+   when someone tabbing through is most likely to reach it. */
+.pk-skip {
+  position: fixed;
+  z-index: 100;
+  top: 8px;
+  left: 8px;
+  padding: 10px 16px;
+  transform: translateY(calc(-100% - 16px));
+  background: var(--pk-ink);
+  color: var(--pk-cream);
+  font: 400 14px/1 var(--pk-serif);
+  text-decoration: none;
+  border-radius: var(--pk-radius);
+  transition: transform var(--pk-t-fast) var(--pk-ease);
+}
+
+.pk-skip:focus,
+.pk-skip:focus-visible {
+  transform: translateY(0);
+  color: var(--pk-cream);
+}
+
 input,
 textarea,
 select,
@@ -308,6 +355,33 @@ img {
   grid-column: 1 / -1;
 }
 
+/* Validation failure, shown against the field itself rather than only in the
+   message at the foot of the form. The label turns too, so the association is
+   readable without relying on colour alone at the control. */
+.pk-field.is-invalid > span {
+  color: var(--pk-danger);
+}
+.pk-field.is-invalid input,
+.pk-field.is-invalid textarea,
+.pk-field.is-invalid select {
+  border-color: var(--pk-danger);
+  background: var(--pk-danger-bg);
+}
+.pk-field.is-invalid input:focus,
+.pk-field.is-invalid textarea:focus,
+.pk-field.is-invalid select:focus {
+  border-color: var(--pk-danger);
+  box-shadow: 0 0 0 3px rgba(140, 47, 47, 0.14);
+}
+
+.pk-terms.is-invalid {
+  color: var(--pk-danger);
+}
+.pk-terms.is-invalid input {
+  outline: 2px solid var(--pk-danger);
+  outline-offset: 2px;
+}
+
 .pk-fieldrow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -350,6 +424,16 @@ img {
   display: block;
   font: 400 13px/1.5 var(--pk-serif);
   color: var(--pk-muted-2);
+}
+
+/* Says plainly that a flow is simulated. Quieter than an error but clearly
+   set apart from the surrounding copy, because it is the one line on the page
+   the visitor must not miss. */
+.pk-demo-note {
+  border-left: 2px solid var(--pk-tan);
+  padding-left: 14px;
+  color: var(--pk-muted) !important;
+  font-style: italic;
 }
 
 .pk-error {

@@ -1,0 +1,12 @@
+# Panwar Knitwear
+# Cart, checkout and order-placed are session state with nothing to rank.
+# Disallow alone does not deindex a URL Google already knows, so these pages
+# also carry <meta name="robots" content="noindex"> — see src/data/seo.js.
+
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /checkout
+Disallow: /order-placed
+
+Sitemap: https://panvar-knitwear.vercel.app/sitemap.xml

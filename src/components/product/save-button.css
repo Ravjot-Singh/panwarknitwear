@@ -1,0 +1,41 @@
+.pk-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(247, 243, 236, 0.86);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--pk-line-strong);
+  border-radius: var(--pk-radius);
+  color: var(--pk-muted);
+  transition: color var(--pk-t-fast) var(--pk-ease),
+    border-color var(--pk-t-fast) var(--pk-ease),
+    transform var(--pk-t-fast) var(--pk-ease);
+}
+
+.pk-save:hover {
+  color: var(--pk-rust);
+  border-color: var(--pk-rust);
+  transform: translateY(-1px);
+}
+
+.pk-save.is-saved {
+  color: var(--pk-rust);
+  border-color: var(--pk-rust);
+}
+
+.pk-save__mark {
+  font: 400 17px/1 var(--pk-serif);
+}
+
+/* Over the photograph on a product card. */
+.pk-save--onmedia {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+}

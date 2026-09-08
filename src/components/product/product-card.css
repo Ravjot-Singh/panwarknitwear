@@ -4,9 +4,32 @@
   gap: 14px;
 }
 
+/* Positions the save button over the photograph. */
+.pk-pcard__mediawrap {
+  position: relative;
+}
+
 .pk-pcard__media {
   display: block;
   cursor: pointer;
+}
+
+/* The colourways a style comes in — informational, not selectable. */
+.pk-pcard__colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.pk-pcard__colors li {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--pk-dot);
+  border: 1px solid rgba(33, 30, 26, 0.24);
 }
 
 .pk-pcard:hover .pk-knit {
@@ -56,6 +79,87 @@
 .pk-pcard__add:hover {
   color: var(--pk-rust-dark);
   letter-spacing: 0.2em;
+}
+
+/* ---------- Inline size chooser ---------- */
+
+.pk-pcard__addwrap {
+  position: relative;
+}
+
+/* Floats above the card so the grid does not reflow when it opens — a card
+   growing taller would shove its neighbours around mid-tap. */
+.pk-pcard__sizes {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 9px);
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  width: max-content;
+  max-width: 210px;
+  padding: 10px;
+  background: var(--pk-field);
+  /* A stronger border than --pk-line-strong: the panel's own fill (#fdfbf7)
+     sits almost on top of the page ground (#f7f3ec), so the edge is what makes
+     it read as a surface floating over the card rather than as loose chips. */
+  border: 1px solid rgba(33, 30, 26, 0.42);
+  border-radius: var(--pk-radius);
+  box-shadow: 0 2px 0 rgba(var(--pk-cmy-m), 0.18),
+    0 4px 0 rgba(var(--pk-cmy-c), 0.14),
+    0 18px 28px -22px rgba(33, 30, 26, 0.5);
+
+  /* Visible by default, with the fade as an enhancement on top. Deliberately
+     NOT `animation-fill-mode: both` over an opacity-0 keyframe: anywhere the
+     animation does not actually run — a throttled tab, a frozen timeline — a
+     filled from-state would leave the popover invisible while still present
+     and focusable, which is worse than having no animation at all. */
+  opacity: 1;
+  animation: pk-pop-in 170ms var(--pk-ease-snap);
+}
+
+@keyframes pk-pop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 5px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pk-pcard__sizes {
+    animation: none;
+  }
+}
+
+/* A small notch pointing back at the Add button. */
+.pk-pcard__sizes::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  background: var(--pk-field);
+  border-right: 1px solid rgba(33, 30, 26, 0.42);
+  border-bottom: 1px solid rgba(33, 30, 26, 0.42);
+  transform: rotate(45deg);
+}
+
+/* The panel stays right-anchored at every width. The Add button sits at the
+   card's right edge, so aligning the panel's right edge with it keeps the whole
+   thing inside the card — anchoring left instead pushes it outward, off the
+   screen on a narrow viewport. Only the wrap width needs to come down. */
+@media (max-width: 420px) {
+  .pk-pcard__sizes {
+    max-width: 148px;
+    padding: 8px;
+  }
 }
 
 .pk-pcard__sub {

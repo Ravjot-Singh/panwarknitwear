@@ -12,11 +12,127 @@
   border-top: 1px solid var(--pk-line);
   border-bottom: 1px solid var(--pk-line);
   padding: 18px 0;
-  margin-bottom: clamp(28px, 3.5vw, 44px);
 }
 
 .pk-toolbar__group {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ---------- Search and sort ---------- */
+
+.pk-search input {
+  width: clamp(170px, 24vw, 250px);
+  background: var(--pk-field);
+  border: 1px solid var(--pk-line-strong);
+  border-radius: var(--pk-radius);
+  padding: 9px 12px;
+  font: 400 14px/1.3 var(--pk-serif);
+  color: var(--pk-ink);
+  transition: border-color var(--pk-t-fast) var(--pk-ease),
+    box-shadow var(--pk-t-fast) var(--pk-ease);
+}
+.pk-search input::placeholder {
+  color: var(--pk-muted-3);
+}
+.pk-search input:focus {
+  outline: none;
+  border-color: var(--pk-rust);
+  box-shadow: 0 0 0 3px rgba(157, 87, 52, 0.12);
+}
+
+.pk-sortsel select {
+  background: var(--pk-field);
+  border: 1px solid var(--pk-line-strong);
+  border-radius: var(--pk-radius);
+  padding: 9px 12px;
+  font: 400 13px/1.3 var(--pk-serif);
+  color: var(--pk-text-2);
+  cursor: pointer;
+}
+.pk-sortsel select:focus {
+  outline: none;
+  border-color: var(--pk-rust);
+  box-shadow: 0 0 0 3px rgba(157, 87, 52, 0.12);
+}
+
+/* ---------- Garment / fabric refinements ---------- */
+
+.pk-refine {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-bottom: 1px solid var(--pk-line);
+  padding: 18px 0;
+}
+
+.pk-refine__row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pk-refine__label {
+  flex: none;
+  min-width: 62px;
+  font: 400 10px/1 var(--pk-serif);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--pk-muted-3);
+}
+
+/* ---------- Result count ---------- */
+
+.pk-collection__count {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 22px 0 clamp(24px, 3vw, 38px);
+}
+
+.pk-collection__count p {
+  margin: 0;
+  font: 400 12px/1.4 var(--pk-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+}
+
+/* ---------- Empty state ---------- */
+
+.pk-collection__empty {
+  border: 1px solid var(--pk-line);
+  border-radius: var(--pk-radius);
+  padding: clamp(32px, 5vw, 60px);
+  text-align: center;
+}
+
+.pk-collection__emptyhead {
+  font: 400 clamp(21px, 2.6vw, 28px) / 1.2 var(--pk-serif);
+  margin: 0 0 12px;
+}
+
+.pk-collection__empty p {
+  font: 400 15px/1.65 var(--pk-serif);
+  color: var(--pk-muted);
+  margin: 0 auto 24px;
+  max-width: 46ch;
+}
+
+@media (max-width: 560px) {
+  .pk-search input {
+    width: 100%;
+  }
+  .pk-toolbar__group {
+    width: 100%;
+  }
+  .pk-refine__label {
+    min-width: 0;
+    width: 100%;
+  }
 }

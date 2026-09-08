@@ -9,11 +9,21 @@ import {
   FABRICS,
   IMAGES,
 } from '../../data/site'
+import Seo from '../../components/seo/Seo'
+import { ROUTE_SEO, breadcrumbJsonLd } from '../../data/seo'
 import './about.css'
 
 export default function About() {
   return (
     <>
+      <Seo
+        {...ROUTE_SEO['/about']}
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+        ])}
+      />
+
       {/* ---------- Intro ---------- */}
       <section className="pk-shell pk-about__intro">
         <div>

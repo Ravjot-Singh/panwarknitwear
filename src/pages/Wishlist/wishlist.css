@@ -1,0 +1,24 @@
+.pk-wish {
+  padding-top: clamp(40px, 5vw, 72px);
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.pk-wish__bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--pk-line);
+  border-bottom: 1px solid var(--pk-line);
+  padding: 16px 0;
+  margin: 24px 0 clamp(26px, 3.5vw, 42px);
+}
+
+.pk-wish__bar p {
+  margin: 0;
+  font: 400 12px/1.4 var(--pk-serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pk-muted-2);
+}

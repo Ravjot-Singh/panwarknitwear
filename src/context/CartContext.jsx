@@ -1,5 +1,6 @@
 import { createContext, useContext, useCallback, useEffect, useMemo, useState } from 'react'
 import { PRODUCTS, getProduct, INR } from '../data/products'
+import { DEFAULT_SHIPPING, getShipping } from '../data/shipping'
 
 const STORAGE_KEY = 'pk-cart'
 const MODE_KEY = 'pk-mode'
@@ -26,6 +27,9 @@ const write = (key, value) => {
 export function CartProvider({ children }) {
   const [lines, setLines] = useState(() => read(STORAGE_KEY, []))
   const [mode, setMode] = useState(() => read(MODE_KEY, 'retail'))
+  /* Not persisted: a delivery choice belongs to the order being placed, not to
+     the browser. It resets with each checkout, unlike the cart and the mode. */
+  const [shipping, setShipping] = useState(DEFAULT_SHIPPING)
 
   useEffect(() => write(STORAGE_KEY, lines), [lines])
   useEffect(() => write(MODE_KEY, mode), [mode])
@@ -90,17 +94,24 @@ export function CartProvider({ children }) {
       return p ? a + priceOf(p) * l.qty : a
     }, 0)
     const tax = wholesale ? sub * 0.05 : 0
+
+    /* The selected method's cost actually lands in the total now. An empty bag
+       has no delivery line at all. */
+    const method = getShipping(shipping)
+    const shipCost = sub > 0 ? method.cost : 0
+
     return {
       subtotal: INR(sub),
       taxLabel: wholesale ? 'GST at 5%' : 'GST (included)',
       tax: wholesale ? INR(tax) : '—',
-      ship: sub > 0 ? 'Free' : '—',
-      total: INR(sub + tax),
+      ship: sub > 0 ? method.label : '—',
+      shipMethod: method,
+      total: INR(sub + tax + shipCost),
       note: wholesale
         ? 'Wholesale rates are ex-GST against MOQ. A proforma follows within one working day; 30% advance opens the knitting slot.'
-        : 'Free surface delivery across India. Returns accepted within 7 days, unworn and with tags.',
+        : 'Standard surface delivery is free across India. Returns accepted within 7 days, unworn and with tags.',
     }
-  }, [lines, mode, priceOf])
+  }, [lines, mode, priceOf, shipping])
 
   const value = useMemo(
     () => ({
@@ -110,6 +121,8 @@ export function CartProvider({ children }) {
       mode,
       setMode,
       isWholesale: mode === 'wholesale',
+      shipping,
+      setShipping,
       priceOf,
       add,
       setQty,
@@ -118,7 +131,19 @@ export function CartProvider({ children }) {
       totals,
       catalogue: PRODUCTS,
     }),
-    [detailed, lines, count, mode, priceOf, add, setQty, remove, clear, totals]
+    [
+      detailed,
+      lines,
+      count,
+      mode,
+      shipping,
+      priceOf,
+      add,
+      setQty,
+      remove,
+      clear,
+      totals,
+    ]
   )
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

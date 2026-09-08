@@ -1,0 +1,35 @@
+.pk-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+  /* Trailing space belongs to the control group: whatever follows it (the size
+     label, on the product page) otherwise butts straight against the swatches
+     with no gap at all. */
+  margin-bottom: 24px;
+}
+
+.pk-colors__dot {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--pk-dot);
+  /* A hairline ink edge so a near-white swatch still reads as a swatch on the
+     cream ground. */
+  border: 1px solid rgba(33, 30, 26, 0.28);
+  box-shadow: 0 0 0 0 var(--pk-ink);
+  transition: box-shadow var(--pk-t-fast) var(--pk-ease),
+    transform var(--pk-t-fast) var(--pk-ease);
+}
+
+.pk-colors__dot:hover {
+  transform: translateY(-1px);
+}
+
+/* An offset ring rather than a tick: a tick sits illegibly over the pale
+   colourways, and the ring reads the same on every fill. */
+.pk-colors__dot.is-active {
+  box-shadow: 0 0 0 2px var(--pk-bg), 0 0 0 3.5px var(--pk-ink);
+}

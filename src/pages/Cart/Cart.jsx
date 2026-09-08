@@ -3,6 +3,8 @@ import Reveal from '../../components/ui/Reveal'
 import Stepper from '../../components/ui/Stepper'
 import KnitPlate from '../../components/product/KnitPlate'
 import { useCart } from '../../context/CartContext'
+import Seo from '../../components/seo/Seo'
+import { ROUTE_SEO } from '../../data/seo'
 import './cart.css'
 
 export default function Cart() {
@@ -16,6 +18,7 @@ export default function Cart() {
 
   return (
     <div className="pk-shell pk-cart">
+      <Seo {...ROUTE_SEO['/cart']} />
       <Reveal as="div" className="pk-eyebrow">
         Bag
       </Reveal>

@@ -8,6 +8,8 @@ import ProductCard from '../../components/product/ProductCard'
 import { useCart } from '../../context/CartContext'
 import { PRODUCTS, FEATURED_IDS } from '../../data/products'
 import { CRAFT_STAGES, JOURNAL, IMAGES } from '../../data/site'
+import Seo from '../../components/seo/Seo'
+import { ROUTE_SEO } from '../../data/seo'
 import './home.css'
 
 const HERO_STATS = [
@@ -29,6 +31,10 @@ export default function Home() {
 
   return (
     <>
+      {/* No ogImage override: the editorial photography is portrait, so the
+          landscape og-default card reads far better as a share preview. */}
+      <Seo {...ROUTE_SEO['/']} />
+
       {/* ---------- Hero ---------- */}
       <section className="pk-shell pk-hero">
         <div>

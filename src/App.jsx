@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home/Home'
 import Collection from './pages/Collection/Collection'
@@ -9,6 +9,8 @@ import OrderPlaced from './pages/OrderPlaced/OrderPlaced'
 import About from './pages/About/About'
 import Contact from './pages/Contact/Contact'
 import Feedback from './pages/Feedback/Feedback'
+import Wishlist from './pages/Wishlist/Wishlist'
+import NotFound from './pages/NotFound/NotFound'
 
 export default function App() {
   return (
@@ -23,7 +25,10 @@ export default function App() {
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="feedback" element={<Feedback />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="wishlist" element={<Wishlist />} />
+        {/* A real page, not a redirect home: see NotFound for why that was a
+            soft 404. */}
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )

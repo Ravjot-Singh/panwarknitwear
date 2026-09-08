@@ -11,6 +11,8 @@ import {
   telHref,
   IMAGES,
 } from '../../data/site'
+import Seo from '../../components/seo/Seo'
+import { ROUTE_SEO, breadcrumbJsonLd } from '../../data/seo'
 import './contact.css'
 
 export default function Contact() {
@@ -34,6 +36,13 @@ export default function Contact() {
 
   return (
     <div className="pk-shell pk-contact">
+      <Seo
+        {...ROUTE_SEO['/contact']}
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Contact', path: '/contact' },
+        ])}
+      />
       <Reveal as="div" className="pk-eyebrow">
         Contact
       </Reveal>
@@ -48,9 +57,14 @@ export default function Contact() {
               <div className="pk-note__body">
                 <h2 className="pk-note__head">Received.</h2>
                 <p className="pk-note__copy">
-                  We answer enquiries within one working day, Monday to Saturday.
-                  Wholesale requests go straight to the sampling desk with your quantity
-                  and fabric.
+                  Enquiries are answered within one working day, Monday to Saturday.
+                  Wholesale requests go to the sampling desk with your quantity and
+                  fabric.
+                </p>
+                <p className="pk-note__copy pk-demo-note">
+                  This is a demonstration build — the form has no backend, so nothing was
+                  actually sent. To reach the unit for real, call one of the numbers in
+                  the footer.
                 </p>
               </div>
             </ComicPanel>

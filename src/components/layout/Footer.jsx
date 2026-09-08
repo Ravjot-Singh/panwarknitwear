@@ -2,45 +2,83 @@ import { Link } from 'react-router-dom'
 import { CONTACT, LISTINGS, SOCIAL, LABEL_SITES, telHref } from '../../data/site'
 import './footer.css'
 
+/* Every link here leaves the site, so each one says so in its accessible name
+   — the visual treatment gives no such cue. */
+function ExternalLink({ href, label }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={`${label} (opens in a new tab)`}
+    >
+      {label}
+    </a>
+  )
+}
+
 export default function Footer() {
   return (
     <footer className="pk-footer">
       <div className="pk-footer__grid pk-shell">
         <div>
-          <div className="pk-footer__brand">Panwar Knitwear</div>
+          <h2 className="pk-footer__brand">Panwar Knitwear</h2>
           <p className="pk-footer__blurb">
             Knitting, processing and finishing under one roof in Ludhiana since 1996.
             Home of ZONIXA and MSP SPORTS.
           </p>
         </div>
 
-        <div>
-          <div className="pk-footer__head">Pages</div>
-          <div className="pk-footer__list">
-            <Link to="/">Home</Link>
-            <Link to="/collection">Collection</Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-            <Link to="/feedback">Feedback</Link>
-          </div>
-        </div>
+        <nav aria-labelledby="pk-foot-pages">
+          <h2 className="pk-footer__head" id="pk-foot-pages">
+            Pages
+          </h2>
+          <ul className="pk-footer__list">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/collection">Collection</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+            <li>
+              <Link to="/feedback">Feedback</Link>
+            </li>
+            <li>
+              <Link to="/wishlist">Saved styles</Link>
+            </li>
+          </ul>
+        </nav>
 
-        <div>
-          <div className="pk-footer__head">Labels</div>
-          <div className="pk-footer__list">
-            <Link to="/collection?label=ZONIXA">ZONIXA</Link>
-            <Link to="/collection?label=MSP%20SPORTS">MSP SPORTS</Link>
-            <Link to="/collection?mode=wholesale">Wholesale</Link>
+        <nav aria-labelledby="pk-foot-labels">
+          <h2 className="pk-footer__head" id="pk-foot-labels">
+            Labels
+          </h2>
+          <ul className="pk-footer__list">
+            <li>
+              <Link to="/collection?label=ZONIXA">ZONIXA</Link>
+            </li>
+            <li>
+              <Link to="/collection?label=MSP%20SPORTS">MSP SPORTS</Link>
+            </li>
+            <li>
+              <Link to="/collection?mode=wholesale">Wholesale</Link>
+            </li>
             {LABEL_SITES.map((s) => (
-              <a key={s.href} href={s.href} target="_blank" rel="noreferrer noopener">
-                {s.label}
-              </a>
+              <li key={s.href}>
+                <ExternalLink href={s.href} label={s.label} />
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </nav>
 
         <div>
-          <div className="pk-footer__head">Reach us</div>
+          <h2 className="pk-footer__head">Reach us</h2>
           <p className="pk-footer__contact">
             {CONTACT.shortAddress}
             <br />
@@ -54,16 +92,18 @@ export default function Footer() {
           </p>
         </div>
 
-        <div>
-          <div className="pk-footer__head">Find us</div>
-          <div className="pk-footer__list">
+        <nav aria-labelledby="pk-foot-find">
+          <h2 className="pk-footer__head" id="pk-foot-find">
+            Find us
+          </h2>
+          <ul className="pk-footer__list">
             {[...LISTINGS, ...SOCIAL].map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noreferrer noopener">
-                {l.label}
-              </a>
+              <li key={l.href}>
+                <ExternalLink href={l.href} label={l.label} />
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </nav>
       </div>
 
       <div className="pk-shell">

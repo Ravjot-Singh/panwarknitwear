@@ -12,10 +12,12 @@
   padding-bottom: clamp(28px, 3vw, 44px);
 }
 
+/* Both of these are <h2> elements, so the margin has to be set outright
+   rather than only on one side. */
 .pk-footer__brand {
   font: 600 19px/1 var(--pk-serif);
   letter-spacing: 0.02em;
-  margin-bottom: 12px;
+  margin: 0 0 12px;
 }
 
 .pk-footer__blurb {
@@ -30,14 +32,19 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--pk-tan);
-  margin-bottom: 16px;
+  margin: 0 0 16px;
 }
 
+/* A <ul> for list semantics; the markers are dropped because the column of
+   links already reads as a list visually. */
 .pk-footer__list {
   display: flex;
   flex-direction: column;
   gap: 11px;
   align-items: flex-start;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .pk-footer__list a,

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
+import { useWishlist } from '../../context/WishlistContext'
 import { useScrollProgress } from '../../hooks/useScrollProgress'
+import ModeToggle from './ModeToggle'
 import './header.css'
 
 const LINKS = [
@@ -14,6 +16,7 @@ const LINKS = [
 
 export default function Header() {
   const { count } = useCart()
+  const { count: saved } = useWishlist()
   const { pathname } = useLocation()
   const { scrolled, progress } = useScrollProgress()
   const [open, setOpen] = useState(false)
@@ -57,7 +60,10 @@ export default function Header() {
           <span className="pk-brand__sub">Ludhiana · Knitting &amp; Finishing</span>
         </Link>
 
-        <nav className={['pk-nav', open ? 'is-open' : ''].filter(Boolean).join(' ')}>
+        <nav
+          aria-label="Main"
+          className={['pk-nav', open ? 'is-open' : ''].filter(Boolean).join(' ')}
+        >
           {LINKS.map((link) => (
             <NavLink
               key={link.to}
@@ -73,9 +79,34 @@ export default function Header() {
             </NavLink>
           ))}
 
-          <Link to="/cart" className="pk-nav__cart">
+          {/* Sits with the cart rather than among the page links: it changes
+              what every price on the site means, so it belongs next to the bag
+              it feeds. */}
+          <ModeToggle />
+
+          {/* Only shown once something is saved: an always-visible zero is
+              noise in a header this compact. */}
+          {saved > 0 ? (
+            <Link
+              to="/wishlist"
+              className="pk-nav__saved"
+              aria-label={`Saved styles, ${saved} ${saved === 1 ? 'style' : 'styles'}`}
+            >
+              <span aria-hidden="true">★</span>
+              <span className="pk-num">{saved}</span>
+            </Link>
+          ) : null}
+
+          <Link
+            to="/cart"
+            className="pk-nav__cart"
+            aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}
+          >
             <span>Cart</span>
-            <span className={['pk-nav__count', 'pk-num', bump ? 'pk-bump' : ''].filter(Boolean).join(' ')}>
+            <span
+              aria-hidden="true"
+              className={['pk-nav__count', 'pk-num', bump ? 'pk-bump' : ''].filter(Boolean).join(' ')}
+            >
               {count}
             </span>
           </Link>

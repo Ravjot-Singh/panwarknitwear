@@ -165,5 +165,4 @@ export const IMAGES = {
   craft: '/img/editorial/hood.jpg',
   about: '/img/editorial/sweat.jpg',
   unit: '/img/editorial/collar.jpg',
-  feather: '/img/editorial/feather.jpg',
 }
